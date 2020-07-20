@@ -1,0 +1,13 @@
+=======================================================================
+                                                      
+TEXTCNN | - acc: 0.9342 - f1: 0.9310 - auc: 0.9825
+LSTM    | - acc: 0.9280 - f1: 0.9252 - auc: 0.9810
+GRU     | - acc: 0.9301 - f1: 0.9267 - auc: 0.9809
+LSTMCNN | - acc: 0.9383 - f1: 0.9355 - auc: 0.9851
+GRUCNN  | - acc: 0.9371 - f1: 0.9347 - auc: 0.9851
+
+ENSEMBLE - LINEAR 	     | - acc: 0.9401 - f1: 0.9371 - auc: 0.9867
+ENSEMBLE - SQUEEZEEXCITATION | - acc: 0.9409 - f1: 0.9383 - auc: 0.9867
+ENSEMBLE - UNIFORMWEIGHT     | - acc: 0.9388 - f1: 0.9360 - auc: 0.9867
+ENSEMBLE - MOESIGMOID  	     | - acc: 0.9397 - f1: 0.9369 - auc: 0.9866
+ENSEMBLE - MOESOFTMAX  	     | - acc: 0.9391 - f1: 0.9357 - auc: 0.9863
