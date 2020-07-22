@@ -2,7 +2,7 @@ import torch
 from data import load_tokenizer, load_embedding
 from train import train, train_ensemble
 from test import test, test_ensemble
-root = "F:/SOFSEM Sentiment Classification 2020/"
+root = "F:/Sentiment-Classification-SOFSEM-2020/"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 print("\nLoad Tokenizer...\n" + "=================")
@@ -44,7 +44,7 @@ pretrained_weights = {
     "lstmcnn": root + "logs/lstmcnn.pth",
     "grucnn": root + "logs/grucnn.pth",
 }
-# for model_type in ["linear", "squeezeexcitation", "uniformweight", "moesigmoid", "moesoftmax"]:
+# for model_type in ["linear", "attention", "squeezeexcitation", "moesigmoid", "moesoftmax", "uniformweight"]:
 #     train_ensemble(
 #         root,
 #         eval_size=0.2,
@@ -58,7 +58,7 @@ pretrained_weights = {
 #         epochs=20,
 #         device=device
 #     )
-for model_type in ["linear", "squeezeexcitation", "uniformweight", "moesigmoid", "moesoftmax"]:
+for model_type in ["linear", "attention", "squeezeexcitation", "moesigmoid", "moesoftmax", "uniformweight"]:
     test_ensemble(
         root,
         tokenizer=tokenizer,

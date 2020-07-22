@@ -1,5 +1,4 @@
 import time
-import json
 import tqdm
 import numpy as np
 import pandas as pd
@@ -9,15 +8,12 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
 from keras.preprocessing.sequence import pad_sequences
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from torch.utils.data import TensorDataset, DataLoader
 from data import load_tokenizer, load_embedding
 from nets import TextCNN, LSTM, GRU, LSTMCNN, GRUCNN
-from ensembles import EnsembleLinear, EnsembleSqueezeExcitation, EnsembleUniformWeight, EnsembleMoESigmoid, EnsembleMoESoftmax
+from ensembles import EnsembleLinear, EnsembleAttention, EnsembleSqueezeExcitation, EnsembleMoESigmoid, EnsembleMoESoftmax, EnsembleUniformWeight
 from utils import *
-
-import warnings
-warnings.simplefilter(action="ignore", category=FutureWarning)
 
 def train(root_path, eval_size, tokenizer, embedding_matrix, model_type, lr, weight_decay, epochs, device):
     df = pd.read_csv(root_path + "dataset/aivivn/train.csv")
@@ -115,7 +111,7 @@ def train(root_path, eval_size, tokenizer, embedding_matrix, model_type, lr, wei
 
         if best_acc < epoch_acc:
             best_acc = epoch_acc
-            best_f1 = epoch_f1
+            best_f1  = epoch_f1
             best_epoch = epoch
             torch.save(model.state_dict(), root_path + "logs/{}.pth".format(model_type))
 
@@ -143,17 +139,18 @@ def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type
     print("Model: ENSEMBLE - {}".format(model_type.upper()))
     if model_type == "linear":
         model = EnsembleLinear(embedding_matrix, num_models, pretrained_weights)
+    if model_type == "attention":
+        model = EnsembleAttention(embedding_matrix, num_models, pretrained_weights)
     if model_type == "squeezeexcitation":
         model = EnsembleSqueezeExcitation(embedding_matrix, num_models, pretrained_weights)
-    if model_type == "uniformweight":
-        model = EnsembleUniformWeight(embedding_matrix, num_models, pretrained_weights)
     if model_type == "moesigmoid":
         model = EnsembleMoESigmoid(embedding_matrix, num_models, pretrained_weights)
     if model_type == "moesoftmax":
         model = EnsembleMoESoftmax(embedding_matrix, num_models, pretrained_weights)
+    if model_type == "uniformweight":
+        model = EnsembleUniformWeight(embedding_matrix, num_models, pretrained_weights)
 
     print("Trainable modules:", get_trainable_modules(model))
-
     model = model.to(device)
     params = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = optim.Adam(params, lr=lr, weight_decay=weight_decay)
@@ -168,7 +165,7 @@ def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type
     best_f1 = 0.0
     best_epoch = 1
     for epoch in range(1, epochs + 1):
-        head = "Epoch    {:2}/{:2}".format(epoch, epochs)
+        head = "epoch {:2}/{:2}".format(epoch, epochs)
         print(head + "\n" + "-"*(len(head)))
 
         model.train()
@@ -194,7 +191,7 @@ def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type
         epoch_loss = running_losses / len(train_dataset)
         epoch_acc = accuracy_score(running_labels, np.round(running_scores))
         epoch_f1 = f1_score(running_labels, np.round(running_scores))
-        print("{} - loss: {:.4f} - acc: {:.4f} - f1: {:.4f}".format("Train", epoch_loss, epoch_acc, epoch_f1))
+        print("{} - loss: {:.4f} - acc: {:.4f} - f1: {:.4f}".format("train", epoch_loss, epoch_acc, epoch_f1))
 
         with torch.no_grad():
             model.eval()
@@ -215,13 +212,13 @@ def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type
         epoch_loss = running_losses / len(eval_dataset)
         epoch_acc = accuracy_score(running_labels, np.round(running_scores))
         epoch_f1 = f1_score(running_labels, np.round(running_scores))
-        print("{} - loss: {:.4f} - acc: {:.4f} - f1: {:.4f}".format("Eval ", epoch_loss, epoch_acc, epoch_f1))
-        print()
+        print("{} - loss: {:.4f} - acc: {:.4f} - f1: {:.4f}".format("eval ", epoch_loss, epoch_acc, epoch_f1))
+
         scheduler.step(epoch_loss)
 
         if best_acc < epoch_acc:
             best_acc = epoch_acc
-            best_f1 = epoch_f1
+            best_f1  = epoch_f1
             best_epoch = epoch
             torch.save(model.state_dict(), root_path + "logs/ensemble_{}.pth".format(model_type))
 

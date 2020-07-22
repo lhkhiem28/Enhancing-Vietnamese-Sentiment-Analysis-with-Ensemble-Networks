@@ -11,7 +11,7 @@ class TextCNN(nn.Module):
 
         self.convs = nn.ModuleList([nn.Conv2d(1, n_filters, (K, embedding_matrix.shape[1])) for K in kernel_sizes])
         self.drop  = nn.Dropout(dropout_prob)
-        self.extracter = nn.Linear(n_filters * len(kernel_sizes), 256)
+        self.extracter  = nn.Linear(n_filters * len(kernel_sizes), 256)
         self.classifier = nn.Linear(256, 1)
 
     def forward(self, x):
@@ -38,16 +38,16 @@ class LSTM(nn.Module):
         
         self.lstm = nn.LSTM(embedding_matrix.shape[1], hidden_size, bidirectional=True, batch_first=True)
         self.drop = nn.Dropout(dropout_prob)
-        self.extracter = nn.Linear(6*hidden_size, 256)
+        self.extracter  = nn.Linear(6*hidden_size, 256)
         self.classifier = nn.Linear(256, 1)
         
     def forward(self, x):
         embedding = self.embedding(x)
         embedding = torch.squeeze(torch.unsqueeze(embedding, 0))
-        lstm, _ = self.lstm(embedding)
-        pooling = torch.cat((torch.mean(lstm, 1), torch.max(lstm, 1)[0]), 1)
+        lstm = self.lstm(embedding)[0]
+        pool = torch.cat((torch.mean(lstm, 1), torch.max(lstm, 1)[0]), 1)
         
-        cat = torch.cat((pooling, lstm[:, -1, :]), 1)
+        cat = torch.cat((pool, lstm[:, -1, :]), 1)
         fea = self.extracter(cat)
         out = self.drop(fea)
         out = self.classifier(out)
@@ -63,16 +63,16 @@ class GRU(nn.Module):
         
         self.gru  = nn.GRU(embedding_matrix.shape[1], hidden_size, bidirectional=True, batch_first=True)
         self.drop = nn.Dropout(dropout_prob)
-        self.extracter = nn.Linear(6*hidden_size, 256)
+        self.extracter  = nn.Linear(6*hidden_size, 256)
         self.classifier = nn.Linear(256, 1)
         
     def forward(self, x):
         embedding = self.embedding(x)
         embedding = torch.squeeze(torch.unsqueeze(embedding, 0))
-        gru, _  = self.gru(embedding)
-        pooling = torch.cat((torch.mean(gru, 1), torch.max(gru, 1)[0]), 1)
+        gru  = self.gru(embedding)[0]
+        pool = torch.cat((torch.mean(gru, 1), torch.max(gru, 1)[0]), 1)
         
-        cat = torch.cat((pooling, gru[:, -1, :]), 1)
+        cat = torch.cat((pool, gru[:, -1, :]), 1)
         fea = self.extracter(cat)
         out = self.drop(fea)
         out = self.classifier(out)
@@ -91,13 +91,12 @@ class LSTMCNN(nn.Module):
         self.lstm = nn.LSTM(embedding_matrix.shape[1], self.hidden_size, bidirectional=True)
         self.drop = nn.Dropout(dropout_prob)
         self.linear = nn.Linear(embedding_matrix.shape[1] + 2*self.hidden_size, self.hidden_size)
-        self.extracter = nn.Linear(self.hidden_size, 256)
+        self.extracter  = nn.Linear(self.hidden_size, 256)
         self.classifier = nn.Linear(256, 1)
 
     def forward(self, x):
         embedding = self.embedding(x).permute(1, 0, 2)
-
-        lstm, _ = self.lstm(embedding)
+        lstm = self.lstm(embedding)[0]
         
         cat = torch.cat((lstm[:, :, :self.hidden_size], embedding, lstm[:, :, self.hidden_size:]), 2).permute(1, 0, 2)
         cat = torch.tanh(self.linear(cat)).permute(0, 2, 1)
@@ -120,13 +119,12 @@ class GRUCNN(nn.Module):
         self.gru  = nn.GRU(embedding_matrix.shape[1], self.hidden_size, bidirectional=True)
         self.drop = nn.Dropout(dropout_prob)
         self.linear = nn.Linear(embedding_matrix.shape[1] + 2*self.hidden_size, self.hidden_size)
-        self.extracter = nn.Linear(self.hidden_size, 256)
+        self.extracter  = nn.Linear(self.hidden_size, 256)
         self.classifier = nn.Linear(256, 1)
 
     def forward(self, x):
         embedding = self.embedding(x).permute(1, 0, 2)
-
-        gru, _  = self.gru(embedding)
+        gru  = self.gru(embedding)[0]
         
         cat = torch.cat((gru[:, :, :self.hidden_size], embedding, gru[:, :, self.hidden_size:]), 2).permute(1, 0, 2)
         cat = torch.tanh(self.linear(cat)).permute(0, 2, 1)

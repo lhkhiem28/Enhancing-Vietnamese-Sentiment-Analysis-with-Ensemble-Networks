@@ -9,9 +9,7 @@ def train_eval_split(df, eval_size):
     train_counts, eval_counts = train_df["mapped_rating"].value_counts().sort_index().values, eval_df["mapped_rating"].value_counts().sort_index().values
     print("\nDataset Statistics:\n" + "===================")
     table = prettytable.PrettyTable(["Class", "Train", "Eval"])
-    table.align["Class"] = "l"
-    table.align["Train"] = "l"
-    table.align["Eval"] = "l"
+    table.align["Class"], table.align["Train"], table.align["Eval"] = "l", "l", "l"
     class_names = ["neg", "pos"]
     for i in range(len(class_names)):
         table.add_row([class_names[i], train_counts[i], eval_counts[i]])
