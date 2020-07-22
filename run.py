@@ -23,7 +23,7 @@ print("Loaded Embedding")
 #         lr=1e-3,
 #         weight_decay=1e-5,
 #         epochs=20,
-#         device=device
+#         device=device,
 #     )
 for model_type in ["textcnn", "lstm", "gru", "lstmcnn", "grucnn"]:
     test(
@@ -31,8 +31,8 @@ for model_type in ["textcnn", "lstm", "gru", "lstmcnn", "grucnn"]:
         tokenizer=tokenizer,
         embedding_matrix=embedding_matrix,
         model_type=model_type,
-        pretrained=root + "logs/" + model_type + ".pth",
-        device=device
+        pretrained=root + "logs/{}.pth".format(model_type),
+        device=device,
     )
 
 """Ensembles"""
@@ -56,7 +56,7 @@ pretrained_weights = {
 #         lr=1e-5,
 #         weight_decay=1e-5,
 #         epochs=20,
-#         device=device
+#         device=device,
 #     )
 for model_type in ["linear", "attention", "squeezeexcitation", "moesigmoid", "moesoftmax", "uniformweight"]:
     test_ensemble(
@@ -66,6 +66,6 @@ for model_type in ["linear", "attention", "squeezeexcitation", "moesigmoid", "mo
         model_type=model_type,
         num_models=num_models,
         pretrained_weights=pretrained_weights,
-        pretrained=root + "logs/" + "ensemble_" + model_type + ".pth",
-        device=device
+        pretrained=root + "logs/ensemble_{}.pth".format(model_type),
+        device=device,
     )
