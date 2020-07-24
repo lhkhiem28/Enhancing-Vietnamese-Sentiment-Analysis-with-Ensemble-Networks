@@ -18,6 +18,6 @@ In this work, we use the dataset:
 
 ## Contact
 
-Cuong V. Nguyen (cuong.vn08@gmail.com)
-Khiem H. Le (lhkhiem28@gmail.com)
-Binh T.Nguyen (ngtbinh@hcmus.edu.vn)
+* Cuong V. Nguyen (cuong.vn08@gmail.com)
+* Khiem H. Le (lhkhiem28@gmail.com)
+* Binh T. Nguyen (ngtbinh@hcmus.edu.vn)
