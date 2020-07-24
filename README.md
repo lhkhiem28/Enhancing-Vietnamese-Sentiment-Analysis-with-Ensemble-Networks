@@ -9,5 +9,7 @@ This is the Pytorch implementation for the paper "Enhancing Vietnamese Sentiment
 
 ## Data preparation
 
-* In this work, we use the dataset:
-AIVIVN: this is the publish dataset from AIVIVN 2019 Sentiment Challenge, including approximately 160K training reviews with the available labels and 11K testing reviews without the available labels. We manually did labelling for the testing dataset.
+In this work, we use the dataset:
+* AIVIVN: this is the publish dataset from AIVIVN 2019 Sentiment Challenge, including approximately 160K training reviews with the available labels and 11K testing reviews without the available labels. We manually did labelling for the testing dataset.
+* The validation dataset is randomly selected from the training dataset, with 20%.
+* The dataset is placed at the folders */dataset/aivivn/
