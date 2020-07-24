@@ -1,6 +1,6 @@
 # Enhancing Vietnamese Sentiment Analysis withEnsemble Networks
 
-This is the Pytorch implementation for the paper "Enhancing Vietnamese Sentiment Analysis withEnsemble Networks", which is submitted at the conference SOFSEM 2021.
+This is the Pytorch implementation for the paper "Enhancing Vietnamese Sentiment Analysis with Ensemble Networks", which is submitted at the conference SOFSEM 2021.
 
 ## Requirement
 
