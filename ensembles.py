@@ -6,7 +6,7 @@ from nets import *
 from utils import *
 
 class EnsembleLinear(nn.Module):
-    def __init__(self, embedding_matrix, num_models, pretrained_weights, dropout_prob=0.2):
+    def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleLinear, self).__init__()
         self.textcnn = TextCNN(embedding_matrix)
         self.lstm = LSTM(embedding_matrix)
@@ -31,7 +31,7 @@ class EnsembleLinear(nn.Module):
         for p in self.grucnn.parameters():
             p.requires_grad = False
 
-        self.linear = nn.Linear(num_models*256, 1024)
+        self.linear = nn.Linear(num_models*featrue_dim, 1024)
         self.drop = nn.Dropout(dropout_prob)
         self.classifier = nn.Linear(1024, 1)
     
@@ -52,7 +52,7 @@ class EnsembleLinear(nn.Module):
         return out
 
 class EnsembleAttention(nn.Module):
-    def __init__(self, embedding_matrix, num_models, pretrained_weights, dropout_prob=0.2):
+    def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleAttention, self).__init__()
         self.textcnn = TextCNN(embedding_matrix)
         self.lstm = LSTM(embedding_matrix)
@@ -78,12 +78,12 @@ class EnsembleAttention(nn.Module):
             p.requires_grad = False
 
         self.se_module = nn.Sequential(
-            nn.Linear(num_models*256, (num_models*256) // 8, bias=False),
+            nn.Linear(num_models*featrue_dim, (num_models*featrue_dim) // 8, bias=False),
             acts.Swish(),
-            nn.Linear((num_models*256) // 8, num_models*256, bias=False),
+            nn.Linear((num_models*featrue_dim) // 8, num_models*featrue_dim, bias=False),
             acts.Sigmoid(),
         )
-        self.linear = nn.Linear(num_models*256, 1024)
+        self.linear = nn.Linear(num_models*featrue_dim, 1024)
         self.drop = nn.Dropout(dropout_prob)
         self.classifier = nn.Linear(1024, 1)
 
@@ -105,7 +105,7 @@ class EnsembleAttention(nn.Module):
         return out
 
 class EnsembleSqueezeExcitation(nn.Module):
-    def __init__(self, embedding_matrix, num_models, pretrained_weights, dropout_prob=0.2):
+    def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleSqueezeExcitation, self).__init__()
         self.textcnn = TextCNN(embedding_matrix)
         self.lstm = LSTM(embedding_matrix)
@@ -136,7 +136,7 @@ class EnsembleSqueezeExcitation(nn.Module):
             nn.Linear(3, num_models, bias=False),
             acts.Sigmoid(),
         )
-        self.linear = nn.Linear(num_models*256, 1024)
+        self.linear = nn.Linear(num_models*featrue_dim, 1024)
         self.drop = nn.Dropout(dropout_prob)
         self.classifier = nn.Linear(1024, 1)
 
@@ -163,7 +163,7 @@ class EnsembleSqueezeExcitation(nn.Module):
         return out
 
 class EnsembleMoESigmoid(nn.Module):
-    def __init__(self, embedding_matrix, num_models, pretrained_weights, dropout_prob=0.2):
+    def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleMoESigmoid, self).__init__()
         self.textcnn = TextCNN(embedding_matrix)
         self.lstm = LSTM(embedding_matrix)
@@ -188,8 +188,8 @@ class EnsembleMoESigmoid(nn.Module):
         for p in self.grucnn.parameters():
             p.requires_grad = False
 
-        self.linear_gate = nn.Linear(num_models*256, num_models)
-        self.linear = nn.Linear(256, 1024)
+        self.linear_gate = nn.Linear(num_models*featrue_dim, num_models)
+        self.linear = nn.Linear(featrue_dim, 1024)
         self.drop = nn.Dropout(dropout_prob)
         self.classifier = nn.Linear(1024, 1)
 
@@ -224,7 +224,7 @@ class EnsembleMoESigmoid(nn.Module):
         return out
 
 class EnsembleMoESoftmax(nn.Module):
-    def __init__(self, embedding_matrix, num_models, pretrained_weights, dropout_prob=0.2):
+    def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleMoESoftmax, self).__init__()
         self.textcnn = TextCNN(embedding_matrix)
         self.lstm = LSTM(embedding_matrix)
@@ -249,8 +249,8 @@ class EnsembleMoESoftmax(nn.Module):
         for p in self.grucnn.parameters():
             p.requires_grad = False
 
-        self.linear_gate = nn.Linear(num_models*256, num_models)
-        self.linear = nn.Linear(256, 1024)
+        self.linear_gate = nn.Linear(num_models*featrue_dim, num_models)
+        self.linear = nn.Linear(featrue_dim, 1024)
         self.drop = nn.Dropout(dropout_prob)
         self.classifier = nn.Linear(1024, 1)
 
@@ -285,7 +285,7 @@ class EnsembleMoESoftmax(nn.Module):
         return out
 
 class EnsembleUniformWeight(nn.Module):
-    def __init__(self, embedding_matrix, num_models, pretrained_weights, dropout_prob=0.2):
+    def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleUniformWeight, self).__init__()
         self.textcnn = TextCNN(embedding_matrix)
         self.lstm = LSTM(embedding_matrix)
@@ -310,7 +310,7 @@ class EnsembleUniformWeight(nn.Module):
         for p in self.grucnn.parameters():
             p.requires_grad = False
 
-        self.linear = nn.Linear(256, 1024)
+        self.linear = nn.Linear(featrue_dim, 1024)
         self.drop = nn.Dropout(dropout_prob)
         self.classifier = nn.Linear(1024, 1)
 
@@ -321,7 +321,7 @@ class EnsembleUniformWeight(nn.Module):
         lstmcnn = self.lstmcnn(x)[0]
         grucnn = self.grucnn(x)[0]
 
-        avg = 0.2*textcnn + 0.2*lstm + 0.2*gru + 0.2*lstmcnn + 0.2*grucnn
+        avg = (textcnn + lstm + gru + lstmcnn + grucnn) / 5
         out = self.linear(avg)
         out = self.drop(out)
         out = self.classifier(out)

@@ -1,8 +1,11 @@
+import warnings
+warnings.filterwarnings("ignore")
+
 import torch
 from data import load_tokenizer, load_embedding
 from train import train, train_ensemble
 from test import test, test_ensemble
-root = "F:/Sentiment-Classification-SOFSEM-2020/"
+root = "F:/Enhance-Vietnamese-Sentiment-Classification-with-Deep-Learning-and-Ensemble-Techniques/"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 print("\nLoad Tokenizer...\n" + "=================")
@@ -31,18 +34,18 @@ for model_type in ["textcnn", "lstm", "gru", "lstmcnn", "grucnn"]:
         tokenizer=tokenizer,
         embedding_matrix=embedding_matrix,
         model_type=model_type,
-        pretrained=root + "logs/{}.pth".format(model_type),
+        pretrained=root + "logs/singles/256/{}.pth".format(model_type),
         device=device,
     )
 
 """Ensembles"""
 num_models = 5
 pretrained_weights = {
-    "textcnn": root + "logs/textcnn.pth",
-    "lstm": root + "logs/lstm.pth",
-    "gru": root + "logs/gru.pth",
-    "lstmcnn": root + "logs/lstmcnn.pth",
-    "grucnn": root + "logs/grucnn.pth",
+    "textcnn": root + "logs/singles/256/textcnn.pth",
+    "lstm": root + "logs/singles/256/lstm.pth",
+    "gru": root + "logs/singles/256/gru.pth",
+    "lstmcnn": root + "logs/singles/256/lstmcnn.pth",
+    "grucnn": root + "logs/singles/256/grucnn.pth",
 }
 # for model_type in ["linear", "attention", "squeezeexcitation", "moesigmoid", "moesoftmax", "uniformweight"]:
 #     train_ensemble(
@@ -66,6 +69,6 @@ for model_type in ["linear", "attention", "squeezeexcitation", "moesigmoid", "mo
         model_type=model_type,
         num_models=num_models,
         pretrained_weights=pretrained_weights,
-        pretrained=root + "logs/ensemble_{}.pth".format(model_type),
+        pretrained=root + "logs/ens_5/256/ensemble_{}.pth".format(model_type),
         device=device,
     )
