@@ -15,7 +15,7 @@ from nets import TextCNN, LSTM, GRU, LSTMCNN, GRUCNN
 from ensembles import EnsembleLinear, EnsembleAttention, EnsembleSqueezeExcitation, EnsembleMoESigmoid, EnsembleMoESoftmax, EnsembleUniformWeight
 from utils import *
 
-def train(root_path, eval_size, tokenizer, embedding_matrix, model_type, lr, weight_decay, epochs, device):
+def train(root_path, eval_size, tokenizer, embedding_matrix, model_type, featrue_dim, lr, weight_decay, epochs, device):
     df = pd.read_csv(root_path + "dataset/aivivn/train.csv")
     train_df, eval_df = train_eval_split(df, eval_size=eval_size)
 
@@ -34,15 +34,15 @@ def train(root_path, eval_size, tokenizer, embedding_matrix, model_type, lr, wei
     print("\nLoad model...\n" + "=============")
     print("Model: {}".format(model_type.upper()))
     if model_type == "textcnn":
-        model = TextCNN(embedding_matrix)
+        model = TextCNN(embedding_matrix, featrue_dim=featrue_dim)
     if model_type == "lstm":
-        model = LSTM(embedding_matrix)
+        model = LSTM(embedding_matrix, featrue_dim=featrue_dim)
     if model_type == "gru":
-        model = GRU(embedding_matrix)
+        model = GRU(embedding_matrix, featrue_dim=featrue_dim)
     if model_type == "lstmcnn":
-        model = LSTMCNN(embedding_matrix)
+        model = LSTMCNN(embedding_matrix, featrue_dim=featrue_dim)
     if model_type == "grucnn":
-        model = GRUCNN(embedding_matrix)
+        model = GRUCNN(embedding_matrix, featrue_dim=featrue_dim)
 
     model = model.to(device)
     params = filter(lambda p: p.requires_grad, model.parameters())
@@ -119,7 +119,7 @@ def train(root_path, eval_size, tokenizer, embedding_matrix, model_type, lr, wei
     print("\nTraining time: {:.0f}m {:.0f}s".format(time_elapsed // 60, time_elapsed % 60))
     print("Result: epoch: {:2} - acc: {:.4f} - f1: {:.4f}".format(best_epoch, best_acc, best_f1))
 
-def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type, num_models, pretrained_weights, lr, weight_decay, epochs, device):
+def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type, featrue_dim, num_models, pretrained_weights, lr, weight_decay, epochs, device):
     df = pd.read_csv(root_path + "dataset/aivivn/train.csv")
     train_df, eval_df = train_eval_split(df, eval_size=eval_size)
 
@@ -138,17 +138,17 @@ def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type
     print("\nLoad model...\n" + "=============")
     print("Model: ENSEMBLE - {}".format(model_type.upper()))
     if model_type == "linear":
-        model = EnsembleLinear(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleLinear(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "attention":
-        model = EnsembleAttention(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleAttention(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "squeezeexcitation":
-        model = EnsembleSqueezeExcitation(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleSqueezeExcitation(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "moesigmoid":
-        model = EnsembleMoESigmoid(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleMoESigmoid(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "moesoftmax":
-        model = EnsembleMoESoftmax(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleMoESoftmax(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "uniformweight":
-        model = EnsembleUniformWeight(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleUniformWeight(embedding_matrix, num_models, pretrained_weights, featrue_dim)
 
     print("Trainable modules:", get_trainable_modules(model))
     model = model.to(device)

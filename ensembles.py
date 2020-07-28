@@ -8,11 +8,11 @@ from utils import *
 class EnsembleLinear(nn.Module):
     def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleLinear, self).__init__()
-        self.textcnn = TextCNN(embedding_matrix)
-        self.lstm = LSTM(embedding_matrix)
-        self.gru = GRU(embedding_matrix)
-        self.lstmcnn = LSTMCNN(embedding_matrix)
-        self.grucnn = GRUCNN(embedding_matrix)
+        self.textcnn = TextCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstm = LSTM(embedding_matrix, featrue_dim=featrue_dim)
+        self.gru = GRU(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstmcnn = LSTMCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.grucnn = GRUCNN(embedding_matrix, featrue_dim=featrue_dim)
 
         self.textcnn.load_state_dict(torch.load(pretrained_weights["textcnn"]))
         self.lstm.load_state_dict(torch.load(pretrained_weights["lstm"]))
@@ -54,11 +54,11 @@ class EnsembleLinear(nn.Module):
 class EnsembleAttention(nn.Module):
     def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleAttention, self).__init__()
-        self.textcnn = TextCNN(embedding_matrix)
-        self.lstm = LSTM(embedding_matrix)
-        self.gru = GRU(embedding_matrix)
-        self.lstmcnn = LSTMCNN(embedding_matrix)
-        self.grucnn = GRUCNN(embedding_matrix)
+        self.textcnn = TextCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstm = LSTM(embedding_matrix, featrue_dim=featrue_dim)
+        self.gru = GRU(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstmcnn = LSTMCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.grucnn = GRUCNN(embedding_matrix, featrue_dim=featrue_dim)
 
         self.textcnn.load_state_dict(torch.load(pretrained_weights["textcnn"]))
         self.lstm.load_state_dict(torch.load(pretrained_weights["lstm"]))
@@ -107,11 +107,11 @@ class EnsembleAttention(nn.Module):
 class EnsembleSqueezeExcitation(nn.Module):
     def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleSqueezeExcitation, self).__init__()
-        self.textcnn = TextCNN(embedding_matrix)
-        self.lstm = LSTM(embedding_matrix)
-        self.gru = GRU(embedding_matrix)
-        self.lstmcnn = LSTMCNN(embedding_matrix)
-        self.grucnn = GRUCNN(embedding_matrix)
+        self.textcnn = TextCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstm = LSTM(embedding_matrix, featrue_dim=featrue_dim)
+        self.gru = GRU(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstmcnn = LSTMCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.grucnn = GRUCNN(embedding_matrix, featrue_dim=featrue_dim)
 
         self.textcnn.load_state_dict(torch.load(pretrained_weights["textcnn"]))
         self.lstm.load_state_dict(torch.load(pretrained_weights["lstm"]))
@@ -165,11 +165,11 @@ class EnsembleSqueezeExcitation(nn.Module):
 class EnsembleMoESigmoid(nn.Module):
     def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleMoESigmoid, self).__init__()
-        self.textcnn = TextCNN(embedding_matrix)
-        self.lstm = LSTM(embedding_matrix)
-        self.gru = GRU(embedding_matrix)
-        self.lstmcnn = LSTMCNN(embedding_matrix)
-        self.grucnn = GRUCNN(embedding_matrix)
+        self.textcnn = TextCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstm = LSTM(embedding_matrix, featrue_dim=featrue_dim)
+        self.gru = GRU(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstmcnn = LSTMCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.grucnn = GRUCNN(embedding_matrix, featrue_dim=featrue_dim)
 
         self.textcnn.load_state_dict(torch.load(pretrained_weights["textcnn"]))
         self.lstm.load_state_dict(torch.load(pretrained_weights["lstm"]))
@@ -226,11 +226,11 @@ class EnsembleMoESigmoid(nn.Module):
 class EnsembleMoESoftmax(nn.Module):
     def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleMoESoftmax, self).__init__()
-        self.textcnn = TextCNN(embedding_matrix)
-        self.lstm = LSTM(embedding_matrix)
-        self.gru = GRU(embedding_matrix)
-        self.lstmcnn = LSTMCNN(embedding_matrix)
-        self.grucnn = GRUCNN(embedding_matrix)
+        self.textcnn = TextCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstm = LSTM(embedding_matrix, featrue_dim=featrue_dim)
+        self.gru = GRU(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstmcnn = LSTMCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.grucnn = GRUCNN(embedding_matrix, featrue_dim=featrue_dim)
 
         self.textcnn.load_state_dict(torch.load(pretrained_weights["textcnn"]))
         self.lstm.load_state_dict(torch.load(pretrained_weights["lstm"]))
@@ -287,11 +287,11 @@ class EnsembleMoESoftmax(nn.Module):
 class EnsembleUniformWeight(nn.Module):
     def __init__(self, embedding_matrix, num_models, pretrained_weights, featrue_dim=256, dropout_prob=0.2):
         super(EnsembleUniformWeight, self).__init__()
-        self.textcnn = TextCNN(embedding_matrix)
-        self.lstm = LSTM(embedding_matrix)
-        self.gru = GRU(embedding_matrix)
-        self.lstmcnn = LSTMCNN(embedding_matrix)
-        self.grucnn = GRUCNN(embedding_matrix)
+        self.textcnn = TextCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstm = LSTM(embedding_matrix, featrue_dim=featrue_dim)
+        self.gru = GRU(embedding_matrix, featrue_dim=featrue_dim)
+        self.lstmcnn = LSTMCNN(embedding_matrix, featrue_dim=featrue_dim)
+        self.grucnn = GRUCNN(embedding_matrix, featrue_dim=featrue_dim)
 
         self.textcnn.load_state_dict(torch.load(pretrained_weights["textcnn"]))
         self.lstm.load_state_dict(torch.load(pretrained_weights["lstm"]))

@@ -15,7 +15,7 @@ from nets import TextCNN, LSTM, GRU, LSTMCNN, GRUCNN
 from ensembles import EnsembleLinear, EnsembleAttention, EnsembleSqueezeExcitation, EnsembleMoESigmoid, EnsembleMoESoftmax, EnsembleUniformWeight
 from utils import *
 
-def test(root_path, tokenizer, embedding_matrix, model_type, pretrained, device):
+def test(root_path, tokenizer, embedding_matrix, model_type, featrue_dim, pretrained, device):
     test_df = pd.read_csv(root_path + "dataset/aivivn/test.csv")
 
     test_tokenized = tokenizer.texts_to_sequences(test_df["discriptions"].astype(str))
@@ -27,15 +27,15 @@ def test(root_path, tokenizer, embedding_matrix, model_type, pretrained, device)
     print("\nLoad model...\n" + "=============")
     print("Model: {}".format(model_type.upper()))
     if model_type == "textcnn":
-        model = TextCNN(embedding_matrix)
+        model = TextCNN(embedding_matrix, featrue_dim=featrue_dim)
     if model_type == "lstm":
-        model = LSTM(embedding_matrix)
+        model = LSTM(embedding_matrix, featrue_dim=featrue_dim)
     if model_type == "gru":
-        model = GRU(embedding_matrix)
+        model = GRU(embedding_matrix, featrue_dim=featrue_dim)
     if model_type == "lstmcnn":
-        model = LSTMCNN(embedding_matrix)
+        model = LSTMCNN(embedding_matrix, featrue_dim=featrue_dim)
     if model_type == "grucnn":
-        model = GRUCNN(embedding_matrix)
+        model = GRUCNN(embedding_matrix, featrue_dim=featrue_dim)
 
     model.load_state_dict(torch.load(pretrained))
     model = model.to(device)
@@ -58,7 +58,7 @@ def test(root_path, tokenizer, embedding_matrix, model_type, pretrained, device)
     auc = roc_auc_score(running_labels, running_scores)
     print("{} - acc: {:.4f} - f1: {:.4f} - auc: {:.4f}".format("test ", acc, f1, auc))
 
-def test_ensemble(root_path, tokenizer, embedding_matrix, model_type, num_models, pretrained_weights, pretrained, device):
+def test_ensemble(root_path, tokenizer, embedding_matrix, model_type, featrue_dim, num_models, pretrained_weights, pretrained, device):
     test_df = pd.read_csv(root_path + "dataset/aivivn/test.csv")
 
     test_tokenized = tokenizer.texts_to_sequences(test_df["discriptions"].astype(str))
@@ -70,17 +70,17 @@ def test_ensemble(root_path, tokenizer, embedding_matrix, model_type, num_models
     print("\nLoad model...\n" + "=============")
     print("Model: ENSEMBLE - {}".format(model_type.upper()))
     if model_type == "linear":
-        model = EnsembleLinear(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleLinear(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "attention":
-        model = EnsembleAttention(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleAttention(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "squeezeexcitation":
-        model = EnsembleSqueezeExcitation(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleSqueezeExcitation(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "moesigmoid":
-        model = EnsembleMoESigmoid(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleMoESigmoid(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "moesoftmax":
-        model = EnsembleMoESoftmax(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleMoESoftmax(embedding_matrix, num_models, pretrained_weights, featrue_dim)
     if model_type == "uniformweight":
-        model = EnsembleUniformWeight(embedding_matrix, num_models, pretrained_weights)
+        model = EnsembleUniformWeight(embedding_matrix, num_models, pretrained_weights, featrue_dim)
 
     print("Trainable modules:", get_trainable_modules(model))
     model.load_state_dict(torch.load(pretrained))

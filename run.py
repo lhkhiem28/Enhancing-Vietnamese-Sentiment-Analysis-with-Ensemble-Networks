@@ -23,6 +23,7 @@ print("Loaded Embedding")
 #         tokenizer=tokenizer,
 #         embedding_matrix=embedding_matrix,
 #         model_type=model_type,
+#         featrue_dim=512,
 #         lr=1e-3,
 #         weight_decay=1e-5,
 #         epochs=20,
@@ -34,18 +35,19 @@ for model_type in ["textcnn", "lstm", "gru", "lstmcnn", "grucnn"]:
         tokenizer=tokenizer,
         embedding_matrix=embedding_matrix,
         model_type=model_type,
-        pretrained=root + "logs/singles/256/{}.pth".format(model_type),
+        featrue_dim=512,
+        pretrained=root + "logs/singles/512/{}.pth".format(model_type),
         device=device,
     )
 
 """Ensembles"""
 num_models = 5
 pretrained_weights = {
-    "textcnn": root + "logs/singles/256/textcnn.pth",
-    "lstm": root + "logs/singles/256/lstm.pth",
-    "gru": root + "logs/singles/256/gru.pth",
-    "lstmcnn": root + "logs/singles/256/lstmcnn.pth",
-    "grucnn": root + "logs/singles/256/grucnn.pth",
+    "textcnn": root + "logs/singles/512/textcnn.pth",
+    "lstm": root + "logs/singles/512/lstm.pth",
+    "gru": root + "logs/singles/512/gru.pth",
+    "lstmcnn": root + "logs/singles/512/lstmcnn.pth",
+    "grucnn": root + "logs/singles/512/grucnn.pth",
 }
 # for model_type in ["linear", "attention", "squeezeexcitation", "moesigmoid", "moesoftmax", "uniformweight"]:
 #     train_ensemble(
@@ -54,6 +56,7 @@ pretrained_weights = {
 #         tokenizer=tokenizer,
 #         embedding_matrix=embedding_matrix,
 #         model_type=model_type,
+#         featrue_dim=512,
 #         num_models=num_models,
 #         pretrained_weights=pretrained_weights,
 #         lr=1e-5,
@@ -67,8 +70,9 @@ for model_type in ["linear", "attention", "squeezeexcitation", "moesigmoid", "mo
         tokenizer=tokenizer,
         embedding_matrix=embedding_matrix,
         model_type=model_type,
+        featrue_dim=512,
         num_models=num_models,
         pretrained_weights=pretrained_weights,
-        pretrained=root + "logs/ens_5/256/ensemble_{}.pth".format(model_type),
+        pretrained=root + "logs/ens_5/512/ensemble_{}.pth".format(model_type),
         device=device,
     )
