@@ -24,5 +24,5 @@ def get_trainable_modules(model):
             if p.requires_grad:
                 trainable_modules.append(name)
                 break
-    
+
     return trainable_modules

@@ -35,18 +35,18 @@ class LSTM(nn.Module):
         self.embedding = nn.Embedding(embedding_matrix.shape[0], embedding_matrix.shape[1])
         self.embedding.weight = nn.Parameter(torch.tensor(embedding_matrix, dtype=torch.float32))
         self.embedding.weight.requires_grad = False
-        
+
         self.lstm = nn.LSTM(embedding_matrix.shape[1], hidden_size, bidirectional=True, batch_first=True)
         self.drop = nn.Dropout(dropout_prob)
         self.extracter  = nn.Linear(6*hidden_size, featrue_dim)
         self.classifier = nn.Linear(featrue_dim, 1)
-        
+
     def forward(self, x):
         embedding = self.embedding(x)
         embedding = torch.squeeze(torch.unsqueeze(embedding, 0))
         lstm = self.lstm(embedding)[0]
         pool = torch.cat((torch.mean(lstm, 1), torch.max(lstm, 1)[0]), 1)
-        
+
         cat = torch.cat((pool, lstm[:, -1, :]), 1)
         fea = self.extracter(cat)
         out = self.drop(fea)
@@ -60,18 +60,18 @@ class GRU(nn.Module):
         self.embedding = nn.Embedding(embedding_matrix.shape[0], embedding_matrix.shape[1])
         self.embedding.weight = nn.Parameter(torch.tensor(embedding_matrix, dtype=torch.float32))
         self.embedding.weight.requires_grad = False
-        
+
         self.gru  = nn.GRU(embedding_matrix.shape[1], hidden_size, bidirectional=True, batch_first=True)
         self.drop = nn.Dropout(dropout_prob)
         self.extracter  = nn.Linear(6*hidden_size, featrue_dim)
         self.classifier = nn.Linear(featrue_dim, 1)
-        
+
     def forward(self, x):
         embedding = self.embedding(x)
         embedding = torch.squeeze(torch.unsqueeze(embedding, 0))
         gru  = self.gru(embedding)[0]
         pool = torch.cat((torch.mean(gru, 1), torch.max(gru, 1)[0]), 1)
-        
+
         cat = torch.cat((pool, gru[:, -1, :]), 1)
         fea = self.extracter(cat)
         out = self.drop(fea)
@@ -83,7 +83,7 @@ class LSTMCNN(nn.Module):
     def __init__(self, embedding_matrix, hidden_size=128, featrue_dim=256, dropout_prob=0.2):
         super(LSTMCNN, self).__init__()
         self.hidden_size = hidden_size
-        
+
         self.embedding = nn.Embedding(embedding_matrix.shape[0], embedding_matrix.shape[1])
         self.embedding.weight = nn.Parameter(torch.tensor(embedding_matrix, dtype=torch.float32))
         self.embedding.weight.requires_grad = False
@@ -97,21 +97,21 @@ class LSTMCNN(nn.Module):
     def forward(self, x):
         embedding = self.embedding(x).permute(1, 0, 2)
         lstm = self.lstm(embedding)[0]
-        
+
         cat = torch.cat((lstm[:, :, :self.hidden_size], embedding, lstm[:, :, self.hidden_size:]), 2).permute(1, 0, 2)
         cat = torch.tanh(self.linear(cat)).permute(0, 2, 1)
         cat = F.max_pool1d(cat, cat.shape[2]).squeeze(2)
         fea = self.extracter(cat)
         out = self.drop(fea)
         out = self.classifier(out) 
-        
+
         return fea, out
 
 class GRUCNN(nn.Module):
     def __init__(self, embedding_matrix, hidden_size=128, featrue_dim=256, dropout_prob=0.2):
         super(GRUCNN, self).__init__()
         self.hidden_size = hidden_size
-        
+
         self.embedding = nn.Embedding(embedding_matrix.shape[0], embedding_matrix.shape[1])
         self.embedding.weight = nn.Parameter(torch.tensor(embedding_matrix, dtype=torch.float32))
         self.embedding.weight.requires_grad = False
@@ -125,12 +125,12 @@ class GRUCNN(nn.Module):
     def forward(self, x):
         embedding = self.embedding(x).permute(1, 0, 2)
         gru  = self.gru(embedding)[0]
-        
+
         cat = torch.cat((gru[:, :, :self.hidden_size], embedding, gru[:, :, self.hidden_size:]), 2).permute(1, 0, 2)
         cat = torch.tanh(self.linear(cat)).permute(0, 2, 1)
         cat = F.max_pool1d(cat, cat.shape[2]).squeeze(2)
         fea = self.extracter(cat)
         out = self.drop(fea)
         out = self.classifier(out) 
-        
+
         return fea, out

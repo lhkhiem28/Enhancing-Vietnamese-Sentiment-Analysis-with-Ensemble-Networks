@@ -80,7 +80,7 @@ def train(root_path, eval_size, tokenizer, embedding_matrix, model_type, featrue
             running_losses += losses.item() * inputs.size(0)
             running_labels += list(labels.unsqueeze(1).data.cpu().numpy())
             running_scores += list(scores.cpu().detach().numpy())
-        
+
         epoch_loss = running_losses / len(train_dataset)
         epoch_acc = accuracy_score(running_labels, np.round(running_scores))
         epoch_f1 = f1_score(running_labels, np.round(running_scores))
@@ -101,7 +101,7 @@ def train(root_path, eval_size, tokenizer, embedding_matrix, model_type, featrue
                 running_losses += losses.item() * inputs.size(0)
                 running_labels += list(labels.unsqueeze(1).data.cpu().numpy())
                 running_scores += list(scores.cpu().detach().numpy())
-        
+
         epoch_loss = running_losses / len(eval_dataset)
         epoch_acc = accuracy_score(running_labels, np.round(running_scores))
         epoch_f1 = f1_score(running_labels, np.round(running_scores))
@@ -187,7 +187,7 @@ def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type
             running_losses += losses.item() * inputs.size(0)
             running_labels += list(labels.unsqueeze(1).data.cpu().numpy())
             running_scores += list(scores.cpu().detach().numpy())
-        
+
         epoch_loss = running_losses / len(train_dataset)
         epoch_acc = accuracy_score(running_labels, np.round(running_scores))
         epoch_f1 = f1_score(running_labels, np.round(running_scores))
@@ -208,7 +208,7 @@ def train_ensemble(root_path, eval_size, tokenizer, embedding_matrix, model_type
                 running_losses += losses.item() * inputs.size(0)
                 running_labels += list(labels.unsqueeze(1).data.cpu().numpy())
                 running_scores += list(scores.cpu().detach().numpy())
-        
+
         epoch_loss = running_losses / len(eval_dataset)
         epoch_acc = accuracy_score(running_labels, np.round(running_scores))
         epoch_f1 = f1_score(running_labels, np.round(running_scores))

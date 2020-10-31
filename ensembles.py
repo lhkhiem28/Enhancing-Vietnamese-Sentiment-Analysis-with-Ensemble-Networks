@@ -34,7 +34,7 @@ class EnsembleLinear(nn.Module):
         self.linear = nn.Linear(num_models*featrue_dim, 1024)
         self.drop = nn.Dropout(dropout_prob)
         self.classifier = nn.Linear(1024, 1)
-    
+
     def forward(self, x):
         cat = torch.cat(
             (
@@ -215,7 +215,7 @@ class EnsembleMoESigmoid(nn.Module):
                 self.lstmcnn(x)[0],
                 self.grucnn(x)[0],
             ], -2
-        ) 
+        )
         out = torch.sum(output_gate.unsqueeze(-1) * stack, -2)
         out = self.linear(out)
         out = self.drop(out)
