@@ -6,4 +6,5 @@ This is the Pytorch implementation for the paper "Enhance Vietnamese Sentiment C
 
 * Cuong V. Nguyen (cuong.vn08@gmail.com)
 * Khiem H. Le (lhkhiem28@gmail.com)
+* Anh M. Tran (trminhanh115@gmail.com)
 * Binh T. Nguyen (ngtbinh@hcmus.edu.vn)
