@@ -1,4 +1,4 @@
-# Enhance Vietnamese Sentiment Classification with Deep Learning and Ensemble Techniques
+# A Novel Approach for Enhancing Vietnamese Sentiment Classification
 
 This is the Pytorch implementation for the paper "Enhance Vietnamese Sentiment Classification with Deep Learning and Ensemble Techniques", which is submitted at the conference SOFSEM 2021.
 
