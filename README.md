@@ -1,6 +1,6 @@
 # A Novel Approach for Enhancing Vietnamese Sentiment Classification
 
-This is official Pytorch implementation of our paper "A Novel Approach for Enhancing Vietnamese Sentiment Classification", which is accepted at the conference IEA / AIE 2021.
+This is official source code of our paper "A Novel Approach for Enhancing Vietnamese Sentiment Classification", which is accepted at the conference IEA / AIE 2021.
 
 ## Data availability
 In this work, we used two datasets, preprocessed versions are placed at the folders */dataset/
