@@ -3,7 +3,7 @@
 This is official Pytorch implementation of our paper "A Novel Approach for Enhancing Vietnamese Sentiment Classification", which is accepted at the conference IEA / AIE 2021.
 
 ## Data availability
-In this work, we used two datasets, preprocessed versions are placed at the folders */dataset/:
+In this work, we used two datasets, preprocessed versions are placed at the folders */dataset/
 
 - AIVIVN Dataset: This is the public dataset from AIVIVN 2019 Sentiment Challenge
 
@@ -18,6 +18,9 @@ In this work, we used two datasets, preprocessed versions are placed at the fold
 | ------------ | -------- | -------- | -----  |
 |Train         | 11765    | 3235     | 15000  |
 |Test          | 137833   | 30210    | 168043 |
+
+## Pre-trained Models availability
+Our pretrained checkpoints are placed at the folders */ckps/
 
 ## Contact
 * Khiem H. Le (lhkhiem28@gmail.com)
