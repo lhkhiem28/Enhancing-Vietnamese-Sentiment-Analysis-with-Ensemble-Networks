@@ -20,7 +20,7 @@ In this work, we used two datasets, preprocessed versions are placed at the fold
 |Test          | 137833   | 30210    | 168043 |
 
 ## Pre-trained Models availability
-Our pretrained checkpoints are placed at the folders */ckps/
+Our pretrained checkpoints are placed at the folders */logs/
 
 ## Contact
 * Khiem H. Le (lhkhiem28@gmail.com)
