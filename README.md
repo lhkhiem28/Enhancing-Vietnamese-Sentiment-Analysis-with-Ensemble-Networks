@@ -24,11 +24,7 @@ Our pretrained checkpoints are placed at the folders */logs/
 
 ## Citation
 ```
-@article{VietnameseSentimentFramework,
-  title={An Efficient Framework for Vietnamese Sentiment Analysis},
-  author={Cuong V. Nguyen, Khiem H. Le, Anh M. Tran, Binh T. Nguyen},
-  journal={Proceedings of The 18th International Conference on Intelligent Software Methodologies, Tools, and Techniques (SoMeT) 2020},
-  year={2020}
+@article{
 }
 ```
 
