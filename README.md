@@ -6,7 +6,7 @@ In this [paper](), we aim at investigating the binary classification problem for
 
 ## **Data**
 We demonstrate the power of our methods on two datasets:
-|*Dataset*|  |*#Positive*|*#Negative*|*Total*|
+|*Dataset*|  |*#Positive*|*#Negative*|*#Total*|
 |:--------|:-|:---------:|:---------:|:-----:|
 |AIVIVN Dataset|train|8690|7383|16073|
 ||test|5767|5214|10981|
