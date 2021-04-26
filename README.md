@@ -15,22 +15,7 @@ We demonstrate the power of our methods on two datasets:
 
 ## **Experimental Results**
 - Baseline methods:
-
-|*Method*|*Acc*|*F1*|*AUC*|
-|:-------|:---:|:--:|:---:|
-|TextCNN||||
-|LSTM||||
-|GRU||||
-|LSTM-CNN||||
-|GRU-CNN||||
-
 - Our proposed ensemble methods:
-
-|*Method*|*Acc*|*F1*|*AUC*|
-|:-------|:---:|:--:|:---:|
-|Concatenation||||
-|Channel-wise Attention||||
-|Model-wise Attention||||
 
 ## **Citation**
 ```
