@@ -14,7 +14,7 @@ We demonstrate the power of our methods on two datasets:
 ||test|137833|30210|168043|
 
 ## **Experimental Results**
-- baseline methods:
+- Baseline methods:
 
 |*Method*|*Acc*|*F1*|*AUC*|
 |:-------|:---:|:--:|:---:|
